@@ -7,28 +7,47 @@ var io = require('socket.io')(http);
 app.use(express.static(__dirname + "/public"));
 
 
+
+// ------ globals ------
+
+var sockets_in_game = [];
+
+
+
 // intial file served to a connecting browser
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/client.html');
 });
 
 
+// ------ listener functions ------
+// bound to each unique socket, accessed via 'this'
+
+// disconnect logic
+var handle_disconnect = function() {
+  console.log("client  " + this.id + "  has left");
+  
+  // eject from update list if needed
+  index = sockets_in_game.indexOf( this );
+  if (index >= 0) {
+    sockets_in_game.splice(index, 1)
+  }
+}
+
+// add socket to list of sockets in-game 
+var join_game = function() {
+  sockets_in_game.push(this);  
+}
 
 
-// on each browser connection, add listeners for different events
+// ------ bind listeners to socket emit events from browser ------
 io.on('connection', function(socket) {		
 	console.log("client  " + socket.id + "  has joined");	
-		
+	
+  socket.on('join_game', join_game.bind(socket) );
 	socket.on('disconnect', handle_disconnect.bind(socket) );	
 });
 
-// listener functions
-// bound to each unique socket, accessed via 'this'
-var handle_disconnect = function() {
-  console.log("client  " + this.id + "  has left");
-}
-
-var sockets_connected = [];
 
 
 http.listen(80, function() {		// 80 is default for web browsers visiting a page

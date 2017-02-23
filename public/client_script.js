@@ -1,5 +1,16 @@
 
 var socket = io();
+var joined = false;
+
+$("#launch_button").click( join );
+
+function join() {
+	if(joined == true)
+		return;
+  
+	joined = true;
+	socket.emit("join_game", {});
+}
 
 addEventListener('keydown', function(event) {
   if(event.keyCode == 37) {         // left
