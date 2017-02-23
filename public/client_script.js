@@ -1,4 +1,6 @@
 
+var socket = io();
+
 addEventListener('keydown', function(event) {
   if(event.keyCode == 37) {         // left
     console.log( 'left' );
