@@ -38,7 +38,6 @@ var handle_disconnect = function() {
   }
 }
 
-// add socket to list of sockets in-game 
 var join_game = function() {
   var initial_data = {
     game_width : game_width,
@@ -46,12 +45,13 @@ var join_game = function() {
     fruit_array : fruit_array
   }
   this.emit('game_setup', initial_data);    // NOTE: will also need to initialize a new player with positions of all objects
-  sockets_in_game.push(this);  
+  sockets_in_game.push(this);
+
+  this.snake = new Snake();
 }
 
-
 var player_input = function(direction) {
-  console.log(direction);
+  this.snake.direction = direction;
 }
 
 // ------ bind listeners to socket emit events from browser ------
@@ -65,6 +65,7 @@ io.on('connection', function(socket) {
 
 // ------ other functions ------
 function update_game() {
+  // initialize fruit and replace as the game goes on
   while (fruit_array.length < max_fruit_in_game) {
     spawn_fruit(1);
   }
@@ -92,6 +93,14 @@ function spawn_fruit(number_fruit) {
       }
     }
   }
+}
+
+// ------ snake class ------
+function Snake() {
+  this.segments = [ {x:0, y:0} ];
+  this.direction = {x:1, y:0};
+  this.size = 3;
+  this.alive = true;
 }
 
 // ------ the main server logic loop ------
