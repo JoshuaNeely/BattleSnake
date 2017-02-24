@@ -12,21 +12,29 @@ var ysections = 0;
 var xinterval = 0
 var yinterval = 0
 
+var dir = {x:1, y:0};
+
 $("#launch_button").click( join );
 
 // ------ controls ------
 addEventListener('keydown', function(event) {
+  var old_dir = {x:dir.x, y:dir.y};
+  
   if(event.keyCode == 37) {         // left
-    console.log( 'left' );
+    dir = {x:-1, y:0};
   }
   else if(event.keyCode == 39) {    // right
-    console.log( 'right' );
+    dir = {x:1, y:0};
   }
   else if(event.keyCode == 38) {    // up
-    console.log( 'up' );
+    dir = {x:0, y:-1};
   }
   else if(event.keyCode == 40) {    // down
-    console.log( 'down' );
+    dir = {x:0, y:1};
+  }
+  
+  if (old_dir.x != dir.x || old_dir.y != dir.y) {
+    socket.emit("direction_control", dir);
   }
 });
 

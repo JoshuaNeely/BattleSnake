@@ -50,12 +50,17 @@ var join_game = function() {
 }
 
 
+var player_input = function(direction) {
+  console.log(direction);
+}
+
 // ------ bind listeners to socket emit events from browser ------
 io.on('connection', function(socket) {		
 	console.log("client  " + socket.id + "  has joined");	
 	
   socket.on('join_game', join_game.bind(socket) );
-	socket.on('disconnect', handle_disconnect.bind(socket) );	
+	socket.on('disconnect', handle_disconnect.bind(socket) );
+  socket.on('direction_control', player_input.bind(socket) );
 });
 
 // ------ other functions ------
