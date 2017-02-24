@@ -11,7 +11,6 @@ var xsections = 0;
 var ysections = 0;
 var xinterval = 0
 var yinterval = 0
-var buffer = 1;
 
 $("#launch_button").click( join );
 
@@ -42,16 +41,14 @@ socket.on('game_setup', function(setup_data) {
   draw_background();
 
   for (fruit of setup_data.fruit_array) {
-    ctx.fillStyle = fruit_color;
-    ctx.fillRect(fruit.column * xinterval + buffer, fruit.row * yinterval + buffer, xinterval-buffer, yinterval-buffer);
+    draw_square(fruit.row, fruit.column, fruit_color, 1);
   }
 });
 
 // continuous screen update; only what is *new* since joining
 socket.on('screen_update', function(new_data) {
   for (fruit of new_data.new_fruit) {
-    ctx.fillStyle = fruit_color;
-    ctx.fillRect(fruit.column * xinterval + buffer, fruit.row * yinterval + buffer, xinterval-buffer, yinterval-buffer);
+    draw_square(fruit.row, fruit.column, fruit_color, 1);
   }
 });
 
@@ -65,7 +62,13 @@ function join() {
 	socket.emit("join_game", {});
 }
 
-// screen refresh
+// used for drawing snake segments, fruit, ...
+function draw_square(row, col, color, margin) {
+  ctx.fillStyle = color;
+  ctx.fillRect(col * xinterval + margin, row * yinterval + margin, xinterval-margin, yinterval-margin);
+}
+
+// screen clear
 function draw_background() {
   ctx.fillStyle = background_color;
   ctx.fillRect(0,0, canvas.width, canvas.height);
