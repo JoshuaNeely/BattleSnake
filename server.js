@@ -80,6 +80,11 @@ function update_game() {
       var valid = true; // valid new_pos; collisions, etc
 
       s.segments.unshift( new_pos );
+    } else {
+      s.size -= 1;
+      if (s.size < 0) {
+        s.respawn();
+      }
     }
 
     if(s.segments.length > s.size) {
@@ -114,10 +119,17 @@ function spawn_fruit(number_fruit) {
 
 // ------ snake class ------
 function Snake() {
-  this.segments = [ {x:0, y:0} ];
-  this.direction = {x:1, y:0};
-  this.size = 3;
-  this.alive = true;
+  // ------ snake local variables ------
+
+  // ------ snake methods ------
+  this.respawn = function() {   
+    this.segments = [ {x:0, y:0} ];
+    this.direction = {x:1, y:0};
+    this.size = 3;
+    this.alive = true;
+  };
+
+  this.respawn();
 }
 
 // ------ the main server logic loop ------
