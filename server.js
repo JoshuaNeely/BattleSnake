@@ -12,7 +12,9 @@ var u = require('./utilities.js');
 var game_width = 50;
 var game_height = 50;
 var sockets_in_game = [];
-
+var game_matrix = u.gen_2d_matrix(game_height, game_width, {});
+var max_fruit_in_game = 5;
+var fruit_array = [];
 
 // intial file served to a connecting browser
 app.get('/', function(req, res) {
@@ -50,16 +52,39 @@ io.on('connection', function(socket) {
 });
 
 // ------ other functions ------
+function update_game() {
+  while (fruit_array.length < max_fruit_in_game) {
+    spawn_fruit(1);
+  }
+}
+
 function update_clients()	{		
 	for (var i=0; i<sockets_in_game.length; i++) {
 		sockets_in_game[i].emit('screen_update', {});
 	}	
 }
 
+function spawn_fruit(number_fruit) {
+  for(var i=0; i<number_fruit; i++) {
+    // find a tile where there is not already a fruit...
+    var found = false;
+    while (!found) {
+      var row = u.random(0, game_height-1);
+      var col = u.random(0, game_width-1);
+      if (!game_matrix[row][col].has_fruit) {
+        game_matrix[row][col].has_fruit = true;
+        fruit_array.push( {row:row, column:col} );
+        found = true;
+      }
+    }
+  }
+}
+
 // ------ the main server logic loop ------
 var FPS = 20;
 setInterval( function() {
-  update_clients(); 
+  update_game();
+  update_clients();
 }, 1000/FPS);
 
 
