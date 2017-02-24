@@ -9,9 +9,9 @@ app.use(express.static(__dirname + "/public"));
 
 
 // ------ globals ------
-
+var game_width = 50;
+var game_height = 50;
 var sockets_in_game = [];
-
 
 
 // intial file served to a connecting browser
@@ -36,6 +36,7 @@ var handle_disconnect = function() {
 
 // add socket to list of sockets in-game 
 var join_game = function() {
+  this.emit('game_setup', {game_width:game_width, game_height:game_height});
   sockets_in_game.push(this);  
 }
 

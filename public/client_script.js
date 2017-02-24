@@ -6,10 +6,10 @@ var socket = io();
 var joined = false;
 
 var background_color = "#333333";
-var xsections = 50;
-var ysections = 50;
-var xinterval = canvas.width / xsections;
-var yinterval = canvas.height / ysections;
+var xsections = 0;
+var ysections = 0;
+var xinterval = 0
+var yinterval = 0
 var buffer = 1;
 
 $("#launch_button").click( join );
@@ -31,6 +31,13 @@ addEventListener('keydown', function(event) {
 });
 
 // ------ socket listen events ------
+socket.on('game_setup', function(setup_data) {	
+	xsections = setup_data.game_width;
+  ysections = setup_data.game_height;
+  xinterval = canvas.width / xsections;
+  yinterval = canvas.height / ysections;
+});
+
 socket.on('screen_update', function() {	
 	draw_background();	
 });
@@ -45,11 +52,13 @@ function join() {
 	socket.emit("join_game", {});
 }
 
+// screen refresh
 function draw_background() {
   ctx.fillStyle = background_color;
   ctx.fillRect(0,0, canvas.width, canvas.height);
 }
 
+// only draw what cells have changed
 function draw_cells(cells) {
   for (var i=0; i<cells.length; i++) {
     ctx.fillStyle = cells[i].color;
