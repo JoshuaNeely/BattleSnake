@@ -16,6 +16,8 @@ var game_matrix = u.gen_2d_matrix(game_height, game_width, {});
 var max_fruit_in_game = 5;
 var fruit_array = [];
 
+var new_fruit = []; // freshly spawned fruit; information to be sent to every client
+
 // intial file served to a connecting browser
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/client.html');
@@ -38,7 +40,12 @@ var handle_disconnect = function() {
 
 // add socket to list of sockets in-game 
 var join_game = function() {
-  this.emit('game_setup', {game_width:game_width, game_height:game_height});
+  var initial_data = {
+    game_width : game_width,
+    game_height : game_height,
+    fruit_array : fruit_array
+  }
+  this.emit('game_setup', initial_data);    // NOTE: will also need to initialize a new player with positions of all objects
   sockets_in_game.push(this);  
 }
 
@@ -58,10 +65,11 @@ function update_game() {
   }
 }
 
-function update_clients()	{		
+function update_clients()	{
 	for (var i=0; i<sockets_in_game.length; i++) {
-		sockets_in_game[i].emit('screen_update', {});
-	}	
+		sockets_in_game[i].emit('screen_update', {new_fruit : new_fruit});
+	}
+  new_fruit = [];
 }
 
 function spawn_fruit(number_fruit) {
@@ -74,6 +82,7 @@ function spawn_fruit(number_fruit) {
       if (!game_matrix[row][col].has_fruit) {
         game_matrix[row][col].has_fruit = true;
         fruit_array.push( {row:row, column:col} );
+        new_fruit.push( {row:row, column:col} );
         found = true;
       }
     }
@@ -81,7 +90,7 @@ function spawn_fruit(number_fruit) {
 }
 
 // ------ the main server logic loop ------
-var FPS = 20;
+var FPS = 3;
 setInterval( function() {
   update_game();
   update_clients();

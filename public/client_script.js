@@ -6,6 +6,7 @@ var socket = io();
 var joined = false;
 
 var background_color = "#333333";
+var fruit_color = "#ff0000";
 var xsections = 0;
 var ysections = 0;
 var xinterval = 0
@@ -31,15 +32,27 @@ addEventListener('keydown', function(event) {
 });
 
 // ------ socket listen events ------
+// one-time setup + screen update
 socket.on('game_setup', function(setup_data) {	
 	xsections = setup_data.game_width;
   ysections = setup_data.game_height;
   xinterval = canvas.width / xsections;
   yinterval = canvas.height / ysections;
+
+  draw_background();
+
+  for (fruit of setup_data.fruit_array) {
+    ctx.fillStyle = fruit_color;
+    ctx.fillRect(fruit.column * xinterval + buffer, fruit.row * yinterval + buffer, xinterval-buffer, yinterval-buffer);
+  }
 });
 
-socket.on('screen_update', function() {	
-	draw_background();	
+// continuous screen update; only what is *new* since joining
+socket.on('screen_update', function(new_data) {
+  for (fruit of new_data.new_fruit) {
+    ctx.fillStyle = fruit_color;
+    ctx.fillRect(fruit.column * xinterval + buffer, fruit.row * yinterval + buffer, xinterval-buffer, yinterval-buffer);
+  }
 });
 
 
