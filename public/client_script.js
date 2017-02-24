@@ -73,11 +73,3 @@ function draw_background() {
   ctx.fillStyle = background_color;
   ctx.fillRect(0,0, canvas.width, canvas.height);
 }
-
-// only draw what cells have changed
-function draw_cells(cells) {
-  for (var i=0; i<cells.length; i++) {
-    ctx.fillStyle = cells[i].color;
-    ctx.fillRect( cells[i].x * xinterval + buffer, cells[i].y * yinterval + buffer, xinterval-buffer, yinterval-buffer );
-  }
-}
