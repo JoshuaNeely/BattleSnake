@@ -69,6 +69,23 @@ function update_game() {
   while (fruit_array.length < max_fruit_in_game) {
     spawn_fruit(1);
   }
+
+  for (var socket of sockets_in_game) {
+    var s = socket.snake;
+    var head = s.segments[0];
+
+    if (s.alive) {
+      var new_pos = {x : head.x + s.direction.x, y : head.y + s.direction.y};
+
+      var valid = true; // valid new_pos; collisions, etc
+
+      s.segments.unshift( new_pos );
+    }
+
+    if(s.segments.length > s.size) {
+      s.segments.pop();
+    }
+  }
 }
 
 function update_clients()	{
