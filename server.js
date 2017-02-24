@@ -6,7 +6,7 @@ var io = require('socket.io')(http);
 
 app.use(express.static(__dirname + "/public"));
 
-
+var u = require('./utilities.js');
 
 // ------ globals ------
 var game_width = 50;
