@@ -48,6 +48,19 @@ io.on('connection', function(socket) {
 	socket.on('disconnect', handle_disconnect.bind(socket) );	
 });
 
+// ------ other functions ------
+function update_clients()	{		
+	for (var i=0; i<sockets_in_game.length; i++) {
+		sockets_in_game[i].emit('screen_update', {});
+	}	
+}
+
+// ------ the main server logic loop ------
+var FPS = 20;
+setInterval( function() {
+  update_clients(); 
+}, 1000/FPS);
+
 
 
 http.listen(80, function() {		// 80 is default for web browsers visiting a page

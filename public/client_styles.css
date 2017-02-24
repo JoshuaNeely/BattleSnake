@@ -8,3 +8,14 @@ body {
 	
   background-color: #111111;
 }
+
+#myCanvas {
+  display: block;
+  height : 500px;
+  width : 500px;
+  border: 1px solid #d3d3d3;
+}
+
+#launchButton {
+  display: block;
+}
