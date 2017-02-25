@@ -78,6 +78,7 @@ io.on('connection', function(socket) {
 	
   socket.on('join_game', join_game.bind(socket) );
 	socket.on('disconnect', handle_disconnect.bind(socket) );
+  socket.on('leave_game', handle_disconnect.bind(socket) );
   socket.on('direction_control', player_input.bind(socket) );
 });
 

@@ -15,6 +15,7 @@ var yinterval = 0
 var dir = {x:1, y:0};
 
 $("#launch_button").click( join );
+$("#leave_button").click( leave );
 
 // ------ controls ------
 addEventListener('keydown', function(event) {
@@ -71,11 +72,17 @@ socket.on('screen_update', function(new_data) {
 
 // ------ functions ------
 function join() {
-	if(joined == true)
-		return;
-  
-	joined = true;
-	socket.emit("join_game", {});
+	if (joined == false) {
+		joined = true;
+    socket.emit("join_game", {});
+  }
+}
+
+function leave() {
+  if (joined == true) {
+    joined = false;
+    socket.emit("leave_game", {});
+  }
 }
 
 // used for drawing snake segments, fruit, ...
