@@ -105,7 +105,7 @@ function update_game() {
               fruit_array.splice(i,1);
             }
           }
-          collided_fruit = null;
+          game_matrix[new_pos.row][new_pos.column].fruit = null;
         }
         
         // update animation and collision data
