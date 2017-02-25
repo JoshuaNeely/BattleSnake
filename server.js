@@ -87,6 +87,7 @@ function update_game() {
 
       var valid = true; // valid new_pos; collisions, etc
 
+      new_segments.push( {row:new_pos.y, column:new_pos.x, color:'#dddddd'} );
       s.segments.unshift( new_pos );
     } else {
       s.size -= 1;
@@ -95,8 +96,10 @@ function update_game() {
       }
     }
 
+    // remove the end of the snake as it moves forward
     if(s.segments.length > s.size) {
-      s.segments.pop();
+      var removed = s.segments.pop();
+      new_segments.push( {row:removed.y, column:removed.x, color:'#333333'} );
     }
   }
 }
