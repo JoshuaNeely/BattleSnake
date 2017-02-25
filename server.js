@@ -45,7 +45,7 @@ var join_game = function() {
   var segment_array = [];
   for (socket of sockets_in_game) {
     for (segment of socket.snake.segments) {
-      segment_array.push( {row:segment.y, column:segment.x, color:'#dddddd'} );
+      segment_array.push( {row:segment.row, column:segment.column, color:'#dddddd'} );
     }
   }
   
@@ -83,16 +83,16 @@ function update_game() {
     var head = s.segments[0];
 
     if (s.alive) {
-      var new_pos = {x : head.x + s.direction.x, y : head.y + s.direction.y};
-      if (validate_position(new_pos)) {
+      var new_pos = {column : head.column + s.direction.x, row : head.row + s.direction.y};
+      if (validate_position(new_pos) == false) {
         s.alive = false;
       } else {
-        new_segments.push( {row:new_pos.y, column:new_pos.x, color:'#dddddd'} );
+        new_segments.push( {row:new_pos.row, column:new_pos.column, color:'#dddddd'} );
         s.segments.unshift( new_pos );
       }     
     } else {
       s.size -= 1;
-      if (s.size < 0) {
+      if (s.size < 0) {        
         s.respawn();
       }
     }
@@ -100,7 +100,7 @@ function update_game() {
     // remove the end of the snake as it moves forward
     if(s.segments.length > s.size) {
       var removed = s.segments.pop();
-      new_segments.push( {row:removed.y, column:removed.x, color:'#333333'} );
+      new_segments.push( {row:removed.row, column:removed.column, color:'#333333'} );
     }
   }
 }
@@ -136,8 +136,9 @@ function spawn_fruit(number_fruit) {
 
 function validate_position(position) {
   var p = position;
+
   // check out of bounds
-  if (p.row < 0 || p.row >= game_height || p.column < 0 || p.column >= game_width) { console.log('out of bounds!');
+  if (p.row < 0 || p.row >= game_height || p.column < 0 || p.column >= game_width) {
     return false;
   }
   return true;
@@ -149,17 +150,17 @@ function Snake() {
 
   // ------ snake methods ------
   this.respawn = function() {   
-    this.segments = [ {x:0, y:0} ];
+    this.segments = [ {column:0, row:0} ];
     this.direction = {x:1, y:0};
     this.size = 3;
-    this.alive = true;
+    this.alive = true;    
   };
 
   this.respawn();
 }
 
 // ------ the main server logic loop ------
-var FPS = 3;
+var FPS = 10;
 setInterval( function() {
   update_game();
   update_clients();
