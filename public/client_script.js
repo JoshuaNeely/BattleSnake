@@ -51,12 +51,20 @@ socket.on('game_setup', function(setup_data) {
   for (fruit of setup_data.fruit_array) {
     draw_square(fruit.row, fruit.column, fruit_color, 1);
   }
+
+  for (segment of setup_data.segment_array) {
+    draw_square(segment.row, segment.column, segment.color, 1);
+  }
 });
 
 // continuous screen update; only what is *new* since joining
 socket.on('screen_update', function(new_data) {
   for (fruit of new_data.new_fruit) {
     draw_square(fruit.row, fruit.column, fruit_color, 1);
+  }
+
+  for (segment of new_data.new_segments) {
+    draw_square(segment.row, segment.column, segment.color, 1);
   }
 });
 
