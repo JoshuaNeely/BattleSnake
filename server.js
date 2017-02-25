@@ -59,7 +59,9 @@ var join_game = function() {
 }
 
 var player_input = function(direction) {
-  this.snake.direction = direction;
+  if (this.snake.direction.x != direction.x*-1 || this.snake.direction.y != direction.y*-1) {
+    this.snake.direction = direction;
+  }
 }
 
 // ------ bind listeners to socket emit events from browser ------
