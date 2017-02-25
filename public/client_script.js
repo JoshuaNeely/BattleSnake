@@ -53,7 +53,7 @@ socket.on('game_setup', function(setup_data) {
   }
 
   for (segment of setup_data.segment_array) {
-    draw_square(segment.row, segment.column, segment_color, 1);
+    draw_square(segment.row, segment.column, segment.color, 1);
   }
 });
 

@@ -39,15 +39,23 @@ var handle_disconnect = function() {
 }
 
 var join_game = function() {
+  sockets_in_game.push(this);
+  this.snake = new Snake();
+  
+  var segment_array = [];
+  for (socket of sockets_in_game) {
+    for (segment of socket.snake.segments) {
+      segment_array.push( {row:segment.y, column:segment.x, color:'#dddddd'} );
+    }
+  }
+  
   var initial_data = {
     game_width : game_width,
     game_height : game_height,
-    fruit_array : fruit_array
+    fruit_array : fruit_array,
+    segment_array : segment_array
   }
-  this.emit('game_setup', initial_data);    // NOTE: will also need to initialize a new player with positions of all objects
-  sockets_in_game.push(this);
-
-  this.snake = new Snake();
+  this.emit('game_setup', initial_data);    // NOTE: will also need to initialize a new player with positions of all objects    
 }
 
 var player_input = function(direction) {
@@ -73,9 +81,14 @@ function update_game() {
 
 function update_clients()	{
 	for (var i=0; i<sockets_in_game.length; i++) {
-		sockets_in_game[i].emit('screen_update', {new_fruit : new_fruit});
+    var update_data = {
+      new_fruit : new_fruit,
+      new_segments : new_segments
+    }
+		sockets_in_game[i].emit('screen_update', update_data);
 	}
   new_fruit = [];
+  new_segments = [];
 }
 
 function spawn_fruit(number_fruit) {
