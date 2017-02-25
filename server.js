@@ -51,9 +51,9 @@ var join_game = function() {
   this.snake = snake_array[snake_array.length-1];
   
   var segment_array = [];
-  for (socket of sockets_in_game) {
-    for (segment of socket.snake.segments) {
-      segment_array.push( {row:segment.row, column:segment.column, color:'#dddddd'} );
+  for (snake of snake_array) {
+    for (segment of snake.segments) {
+      segment_array.push( {row:segment.row, column:segment.column, color:snake.color} );
     }
   }
   
