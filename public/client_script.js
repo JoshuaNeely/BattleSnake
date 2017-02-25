@@ -6,7 +6,6 @@ var socket = io();
 var joined = false;
 
 var background_color = "#333333";
-var fruit_color = "#ff0000";
 var xsections = 0;
 var ysections = 0;
 var xinterval = 0
@@ -50,7 +49,7 @@ socket.on('game_setup', function(setup_data) {
   draw_background();
 
   for (fruit of setup_data.fruit_array) {
-    draw_square(fruit.row, fruit.column, fruit_color, 1);
+    draw_square(fruit.row, fruit.column, fruit.color, 1);
   }
 
   for (segment of setup_data.segment_array) {
@@ -59,9 +58,9 @@ socket.on('game_setup', function(setup_data) {
 });
 
 // continuous screen update; only what is *new* since joining
-socket.on('screen_update', function(new_data) {
-  for (fruit of new_data.new_fruit) {
-    draw_square(fruit.row, fruit.column, fruit_color, 1);
+socket.on('screen_update', function(new_data) {  
+  for (fruit of new_data.new_fruit) {    
+    draw_square(fruit.row, fruit.column, fruit.color, 1);
   }
 
   for (segment of new_data.new_segments) {

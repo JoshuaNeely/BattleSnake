@@ -164,10 +164,11 @@ function spawn_fruit(number_fruit) {
       var row = u.random(0, game_height-1);
       var col = u.random(0, game_width-1);
       if (!game_matrix[row][col].fruit) {
-        game_matrix[row][col].fruit = {nutrition:1};
-        fruit_array.push( {row:row, column:col} );
-        new_fruit.push( {row:row, column:col} );
-        found = true;
+        f = new Fruit(row, col);
+        game_matrix[row][col].fruit = f;
+        fruit_array.push( f );
+        new_fruit.push( f );
+        found = true;        
       }
     }
   }
@@ -189,13 +190,13 @@ function validate_position(position) {
   return true;
 }
 
-// ------ snake class ------
+// ------ classes ------
 function Snake(parent_socket_reference) {
-  // ------ snake local variables ------
+  // ------ local variables ------
   this.color = '#dddddd';
   this.parent = parent_socket_reference;  // a reference to the parent; if it leaves this should be null
   
-  // ------ snake methods ------
+  // ------ methods ------
   this.respawn = function() {   
     this.segments = [ {column:0, row:0} ];
     this.direction = {x:1, y:0};
@@ -204,6 +205,19 @@ function Snake(parent_socket_reference) {
   };
 
   this.respawn();
+}
+
+function Fruit(row, col) {
+  // ------ local variables ------
+  if (u.random(0,5) == 0) {
+    this.nutrition = 5;
+    this.color = "#00ff00";
+  } else {
+    this.nutrition = 1;
+    this.color = "#ff0000";
+  }
+  this.row = row;
+  this.column = col;
 }
 
 // ------ the main server logic loop ------
