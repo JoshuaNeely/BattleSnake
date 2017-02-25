@@ -61,7 +61,7 @@ var join_game = function() {
     game_width : game_width,
     game_height : game_height,
     fruit_array : fruit_array,
-    segment_array : segment_array
+    segment_array : segment_array,    
   }
   this.emit('game_setup', initial_data);    // NOTE: will also need to initialize a new player with positions of all objects    
 }
@@ -201,7 +201,9 @@ function Snake(parent_socket_reference) {
     this.segments = [ {column:0, row:0} ];
     this.direction = {x:1, y:0};
     this.size = 3;
-    this.alive = true;    
+    this.alive = true;
+    
+    this.parent.emit('respawned', {initial_direction:this.direction});
   };
 
   this.respawn();

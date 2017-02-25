@@ -57,6 +57,10 @@ socket.on('game_setup', function(setup_data) {
   }
 });
 
+socket.on('respawned', function(data) {
+  dir = data.initial_direction;
+});
+
 // continuous screen update; only what is *new* since joining
 socket.on('screen_update', function(new_data) {  
   for (fruit of new_data.new_fruit) {    
