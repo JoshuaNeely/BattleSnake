@@ -77,9 +77,11 @@ function update_game() {
     if (s.alive) {
       var new_pos = {x : head.x + s.direction.x, y : head.y + s.direction.y};
 
-      var valid = true; // valid new_pos; collisions, etc
-
-      s.segments.unshift( new_pos );
+      if (validate_position(new_pos)) {
+        s.alive = false;
+      } else {
+        s.segments.unshift( new_pos );
+      }
     } else {
       s.size -= 1;
       if (s.size < 0) {
@@ -115,6 +117,15 @@ function spawn_fruit(number_fruit) {
       }
     }
   }
+}
+
+function validate_position(position) {
+  var p = position;
+  // check out of bounds
+  if (p.row < 0 || p.row >= game_height || p.column < 0 || p.column >= game_width) { console.log('out of bounds!');
+    return false;
+  }
+  return true;
 }
 
 // ------ snake class ------
