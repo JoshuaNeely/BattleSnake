@@ -163,7 +163,7 @@ function spawn_fruit(number_fruit) {
     while (!found) {
       var row = u.random(0, game_height-1);
       var col = u.random(0, game_width-1);
-      if (!game_matrix[row][col].fruit) {
+      if (!game_matrix[row][col].fruit && !game_matrix[row][col].snake) {
         f = new Fruit(row, col);
         game_matrix[row][col].fruit = f;
         fruit_array.push( f );
