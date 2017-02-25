@@ -89,7 +89,9 @@ function update_game() {
       if (validate_position(new_pos) == false) {
         s.alive = false;
       } else {
-        new_segments.push( {row:new_pos.row, column:new_pos.column, color:'#dddddd'} );
+        new_segments.push( {row:new_pos.row, column:new_pos.column, color:s.color} );
+        game_matrix[new_pos.row][new_pos.column].snake = true;
+        
         s.segments.unshift( new_pos );
       }     
     } else {
@@ -103,6 +105,7 @@ function update_game() {
     if(s.segments.length > s.size) {
       var removed = s.segments.pop();
       new_segments.push( {row:removed.row, column:removed.column, color:'#333333'} );
+      game_matrix[removed.row][removed.column].snake = null;
     }
   }
 }
@@ -143,13 +146,20 @@ function validate_position(position) {
   if (p.row < 0 || p.row >= game_height || p.column < 0 || p.column >= game_width) {
     return false;
   }
+  
+  // check collision with other snakes
+  if (game_matrix[p.row][p.column].snake) {
+    return false;
+  }
+  
   return true;
 }
 
 // ------ snake class ------
 function Snake() {
   // ------ snake local variables ------
-
+  this.color = '#dddddd';
+  
   // ------ snake methods ------
   this.respawn = function() {   
     this.segments = [ {column:0, row:0} ];
