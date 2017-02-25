@@ -15,6 +15,7 @@ var sockets_in_game = [];
 var game_matrix = u.gen_2d_matrix(game_height, game_width, {});
 var max_fruit_in_game = 5;
 var fruit_array = [];
+var snake_array = [];
 
 var new_fruit = []; // freshly spawned fruit; information to be sent to every client
 
@@ -30,17 +31,24 @@ app.get('/', function(req, res) {
 // disconnect logic
 var handle_disconnect = function() {
   console.log("client  " + this.id + "  has left");
-  
+
   // eject from update list if needed
   index = sockets_in_game.indexOf( this );
   if (index >= 0) {
     sockets_in_game.splice(index, 1)
   }
+
+  if (this.snake) {
+    this.snake.alive = false;
+    this.snake.no_respawn = true;
+    this.snake.parent = null;
+  }
 }
 
 var join_game = function() {
   sockets_in_game.push(this);
-  this.snake = new Snake();
+  snake_array.push( new Snake( sockets_in_game[sockets_in_game.length-1] ) );
+  this.snake = snake_array[snake_array.length-1];
   
   var segment_array = [];
   for (socket of sockets_in_game) {
@@ -80,30 +88,31 @@ function update_game() {
     spawn_fruit(1);
   }
 
-  for (var socket of sockets_in_game) {
-    var s = socket.snake;
-    var head = s.segments[0];
+  for (var snake of snake_array) {    
+    var head = snake.segments[0];
 
-    if (s.alive) {
-      var new_pos = {column : head.column + s.direction.x, row : head.row + s.direction.y};
+    if (snake.alive) {
+      var new_pos = {column : head.column + snake.direction.x, row : head.row + snake.direction.y};
       if (validate_position(new_pos) == false) {
-        s.alive = false;
+        snake.alive = false;
       } else {
-        new_segments.push( {row:new_pos.row, column:new_pos.column, color:s.color} );
+        new_segments.push( {row:new_pos.row, column:new_pos.column, color:snake.color} );
         game_matrix[new_pos.row][new_pos.column].snake = true;
         
-        s.segments.unshift( new_pos );
+        snake.segments.unshift( new_pos );
       }     
     } else {
-      s.size -= 1;
-      if (s.size < 0) {        
-        s.respawn();
+      snake.size -= 1;
+      if (snake.size < 0) {
+        if (snake.parent) {          
+          snake.respawn();
+        }
       }
     }
 
     // remove the end of the snake as it moves forward
-    if(s.segments.length > s.size) {
-      var removed = s.segments.pop();
+    if(snake.segments.length > snake.size && snake.segments.length) {
+      var removed = snake.segments.pop();
       new_segments.push( {row:removed.row, column:removed.column, color:'#333333'} );
       game_matrix[removed.row][removed.column].snake = null;
     }
@@ -120,6 +129,15 @@ function update_clients()	{
 	}
   new_fruit = [];
   new_segments = [];
+}
+
+function cleanup_clients() {
+  // cleanup unneeded sockets
+  for (var i=0; i<snake_array.length; i++) {
+    if (!snake_array[i].parent && snake_array[i].size < 0) {
+      snake_array.splice(i, 1)
+    } 
+  }
 }
 
 function spawn_fruit(number_fruit) {
@@ -156,9 +174,10 @@ function validate_position(position) {
 }
 
 // ------ snake class ------
-function Snake() {
+function Snake(parent_socket_reference) {
   // ------ snake local variables ------
   this.color = '#dddddd';
+  this.parent = parent_socket_reference;  // a reference to the parent; if it leaves this should be null
   
   // ------ snake methods ------
   this.respawn = function() {   
@@ -176,6 +195,7 @@ var FPS = 10;
 setInterval( function() {
   update_game();
   update_clients();
+  cleanup_clients();
 }, 1000/FPS);
 
 
