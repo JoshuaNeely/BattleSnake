@@ -21,7 +21,7 @@ var new_fruit = []; // freshly spawned fruit; information to be sent to every cl
 
 // intial file served to a connecting browser
 app.get('/', function(req, res) {
-	res.sendFile(__dirname + '/client.html');
+	res.sendFile(__dirname + '/public/client.html');
 });
 
 
