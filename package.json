@@ -19,7 +19,7 @@
     "postinstall": "bower install",
     
     "prestart": "npm install",
-    "start" : "node ./source/server.js echo test"
+    "start" : "node ./source/server.js"
   },
   "license": "MIT"
 }
