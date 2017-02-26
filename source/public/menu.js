@@ -8,4 +8,8 @@ menu.controller('MenuController', function MenuController($scope) {
       {name : 'green', value : "#00ff00"}
     ]
   }
+
+  $scope.submitForm = function() {
+    console.log( 'selected color:', $scope.data.selectedOption );
+  }
 });

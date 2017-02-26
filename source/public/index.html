@@ -6,14 +6,16 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <script src="bower_components/angular/angular.js"></script>
     <script src="menu.js"></script>
+    <link rel="stylesheet" type="text/css" href="client_styles.css">
   </head>
   <body ng-controller="MenuController">
 
+    <div class="form-container">
     <h1>BATTLE SNAKE</h1>
 
-    <form name="userForm">
+    <form name="userForm" ng-submit="submitForm()" class="container">
 
-      <div>
+      <div class="container">
         <label>
           Name:
           <input type="text" name="userName" ng-model="user.name" required>
@@ -21,7 +23,7 @@
         </label>
       </div>
 
-      <div>
+      <div class="container">
         <label>
           Color:
           <select size="1" name="userColor" required
@@ -32,7 +34,14 @@
         </label>
       </div>
 
+      <input
+        type="submit"
+        ng-disabled="userForm.$invalid"
+        ng-class="{'disabled-class' : userForm.$invalid}">
+      </input>
+
     </form>
+    </div>
 
   </body>
 </html>
