@@ -1,18 +1,15 @@
 var game = angular.module('game', ['ngRoute']);
 
 game.component('game', {
-  tamplateUrl : '/client.html',
+  templateUrl : '/game.html',
   bindings : { },
   controller : ['$routeParams', '$scope', GameController]
 });
 
 function GameController($routeParams, $scope) {
-  
-}
+  var canvas = document.getElementById("gameCanvas");
+  var ctx = canvas.getContext("2d");
 
-
-var canvas = document.getElementById("gameCanvas");
-var ctx = canvas.getContext("2d");
 
 var socket = io();
 var joined = false;
@@ -110,4 +107,7 @@ function draw_square(row, col, color, margin) {
 function draw_background() {
   ctx.fillStyle = background_color;
   ctx.fillRect(0,0, canvas.width, canvas.height);
+}
+
+
 }

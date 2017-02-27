@@ -1,47 +1,22 @@
 <!doctype html>
-<html lang="en" ng-app="menu">
+<html lang="en" ng-app="mainApp">
   <head>
     <meta charset="utf-8">
     <title>Player Setup</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <script src="socket.io.js"></script>
+    <script src="jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="menu.js"></script>
-    <link rel="stylesheet" type="text/css" href="client_styles.css">
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="main.js"></script>
+    <script src="home.js"></script>
+    <script src="setup.js"></script>
+    <script src="game.js"></script>
+    <link rel="stylesheet" href="game_styles.css" />
+  
   </head>
-  <body ng-controller="MenuController">
-
-    <div class="form-container">
-    <h1>BATTLE SNAKE</h1>
-
-    <form name="userForm" ng-submit="submitForm()" class="container">
-
-      <div class="container">
-        <label>
-          Name:
-          <input type="text" name="userName" ng-model="user.name" required>
-          <span role="alert" class="error" ng-show="userForm.userName.$error.required">Required!</span>
-        </label>
-      </div>
-
-      <div class="container">
-        <label>
-          Color:
-          <select size="1" name="userColor" required
-            ng-options="option.name for option in data.availableOptions track by option.name"
-            ng-model="data.selectedOption">
-          </select>
-          <span role="alert" class="error" ng-show="userForm.userColor.$error.required">Required!</span>
-        </label>
-      </div>
-
-      <input
-        type="submit"
-        ng-disabled="userForm.$invalid"
-        ng-class="{'disabled-class' : userForm.$invalid}">
-      </input>
-
-    </form>
-    </div>
-
+  <body ng-controller="MainController as ctrl">    
+    {{ctrl.test1}}  
+    <div ng-view></div>
   </body>
 </html>

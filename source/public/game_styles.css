@@ -1,0 +1,37 @@
+
+body {
+  position : fixed;
+  margin : 0;
+  padding : 0;	
+  border : 1px solid #d3d3d3; 	
+  background-color: #111111;
+}
+
+#myCanvas {
+  display: block;
+  height : 500px;
+  width : 500px;
+  border: 1px solid #d3d3d3;
+}
+
+#launchButton {
+  display: block;
+}
+
+.disabled-class {  
+  opacity: .30;
+}
+
+.form-container {
+  padding : 20px;
+  background-color : #ffffff;
+}
+
+.container {
+  padding : 5px;
+}
+
+.game-container {
+  padding : 20px;
+  background-color : #ffffff; 
+}

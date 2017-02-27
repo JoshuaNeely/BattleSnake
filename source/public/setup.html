@@ -1,0 +1,34 @@
+<body ng-controller="SetupController">
+
+  <div class="form-container">  
+  <form name="userForm" ng-submit="submitForm()" class="container">
+
+    <div class="container">
+      <label>
+        Name:
+        <input type="text" name="userName" ng-model="user.name" required>
+        <span role="alert" class="error" ng-show="userForm.userName.$error.required">Required!</span>
+      </label>
+    </div>
+
+    <div class="container">
+      <label>
+        Color:
+        <select size="1" name="userColor" required
+          ng-options="option.color_name for option in data.availableOptions track by option.name"
+          ng-model="data.selectedOption">
+        </select>
+        <span role="alert" class="error" ng-show="userForm.userColor.$error.required">Required!</span>
+      </label>
+    </div>
+
+    <input
+      type="submit"
+      ng-disabled="userForm.$invalid"
+      ng-class="{'disabled-class' : userForm.$invalid}">
+    </input>
+
+  </form>
+  </div>
+
+</body>
