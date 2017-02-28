@@ -17,8 +17,7 @@
   },
   "scripts" : {
     "postinstall": "bower install",
-    
-    "prestart": "npm install",
+        
     "start" : "node ./source/server.js"
   },
   "license": "MIT"

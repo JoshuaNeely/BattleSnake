@@ -10,8 +10,7 @@ game.component('game', {
 
 function GameController($routeParams, $scope) {
 
-  $scope.$on("$locationChangeStart", function() { $scope.leave(); });
-
+  $scope.$on("$locationChangeStart", function() { socket.emit('stop_watching', {}); });
   var canvas = document.getElementById("gameCanvas");
   var ctx = canvas.getContext("2d");
 
