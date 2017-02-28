@@ -38,7 +38,7 @@ var handle_disconnect = function() {
     sockets_watching.splice(index, 1)
   }
 
-  leave_game.bind(this);
+  leave_game.call(this);
 }
 
 var join_game = function(player_data) {
