@@ -9,6 +9,9 @@ game.component('game', {
 });
 
 function GameController($routeParams, $scope) {
+
+  $scope.$on("$locationChangeStart", function() { $scope.leave(); });
+
   var canvas = document.getElementById("gameCanvas");
   var ctx = canvas.getContext("2d");
 
@@ -22,9 +25,6 @@ function GameController($routeParams, $scope) {
   var yinterval = 0
 
   var dir = {x:1, y:0};
-
-  $("#launch_button").click( join );
-  $("#leave_button").click( leave );
 
   // ------ controls ------
   addEventListener('keydown', function(event) {
@@ -84,14 +84,14 @@ function GameController($routeParams, $scope) {
 
 
   // ------ functions ------
-  function join() {
+  $scope.join = function() {
   	if (joined == false) {
   		joined = true;
       socket.emit("join_game", $scope.$ctrl.data);
     }
   }
 
-  function leave() {
+  $scope.leave = function() {
     if (joined == true) {
       joined = false;
       socket.emit("leave_game", {});

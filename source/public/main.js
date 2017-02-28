@@ -19,5 +19,5 @@ main.config(['$locationProvider', '$routeProvider',
 ]);
 
 main.controller('MainController', function MainController($scope, $location) {
-  this.player_data = {name:'guest', color:'#dddddd'};  
+  this.player_data = {name:'guest', color:'#dddddd'};
 });

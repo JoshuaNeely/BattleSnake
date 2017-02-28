@@ -46,6 +46,8 @@ var handle_disconnect = function() {
 }
 
 var join_game = function(player_data) {
+  handle_disconnect.bind(this);
+
   sockets_in_game.push(this);
   snake_array.push( new Snake( sockets_in_game[sockets_in_game.length-1], player_data ) );
   this.snake = snake_array[snake_array.length-1];
