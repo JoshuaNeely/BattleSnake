@@ -45,9 +45,9 @@ var handle_disconnect = function() {
   }
 }
 
-var join_game = function() {
+var join_game = function(player_data) {
   sockets_in_game.push(this);
-  snake_array.push( new Snake( sockets_in_game[sockets_in_game.length-1] ) );
+  snake_array.push( new Snake( sockets_in_game[sockets_in_game.length-1], player_data ) );
   this.snake = snake_array[snake_array.length-1];
   
   var segment_array = [];
@@ -63,7 +63,7 @@ var join_game = function() {
     fruit_array : fruit_array,
     segment_array : segment_array,    
   }
-  this.emit('game_setup', initial_data);    // NOTE: will also need to initialize a new player with positions of all objects    
+  this.emit('game_setup', initial_data);
 }
 
 var player_input = function(direction) {
@@ -191,9 +191,10 @@ function validate_position(position) {
 }
 
 // ------ classes ------
-function Snake(parent_socket_reference) {
-  // ------ local variables ------
-  this.color = '#dddddd';
+function Snake(parent_socket_reference, player_data) {
+  // ------ local variables ------  
+  this.color = player_data.color;
+  this.name = player_data.name;
   this.parent = parent_socket_reference;  // a reference to the parent; if it leaves this should be null
   
   // ------ methods ------

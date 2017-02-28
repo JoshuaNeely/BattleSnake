@@ -2,11 +2,11 @@
 
   <div class="form-container">  
   <form name="userForm" ng-submit="submitForm()" class="container">
-
+    
     <div class="container">
       <label>
         Name:
-        <input type="text" name="userName" ng-model="user.name" required>
+        <input type="text" name="userName" ng-model="data.name" required>
         <span role="alert" class="error" ng-show="userForm.userName.$error.required">Required!</span>
       </label>
     </div>
@@ -15,7 +15,7 @@
       <label>
         Color:
         <select size="1" name="userColor" required
-          ng-options="option.color_name for option in data.availableOptions track by option.name"
+          ng-options="option.color_name for option in data.availableOptions track by option.color_name"
           ng-model="data.selectedOption">
         </select>
         <span role="alert" class="error" ng-show="userForm.userColor.$error.required">Required!</span>

@@ -3,13 +3,13 @@ var setup = angular.module('setup', ['ngRoute']);
 setup.component('setup', {
   templateUrl : '/setup.html',
   bindings : {
-    test : '='
+    data : '='
   },
   controller : ['$scope', '$routeParams', '$location', SetupController]
 });
 
 
-function SetupController($scope, $routeParams, $location) {
+function SetupController($scope, $routeParams, $location) {  
   $scope.data = {
     availableOptions : [
       {color_name : 'red',    color_value : "#ff0000"},
@@ -19,7 +19,7 @@ function SetupController($scope, $routeParams, $location) {
   }
 
   $scope.submitForm = function() {    
-    this.$ctrl.test = $scope.data.selectedOption;
+    this.$ctrl.data = {name: $scope.data.name, color: $scope.data.selectedOption.color_value};
     $location.path('/home');
   }
 }

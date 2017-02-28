@@ -2,14 +2,9 @@ var home = angular.module('home', ['ngRoute']);
 
 home.component('home', {
   templateUrl : '/home.html',
-  bindings : {
-    homevar : '='
-  },
+  bindings : {},
   controller : ['$scope', '$routeParams', HomeController]
 });
 
 function HomeController($scope, $routeParams) {  
-  $scope.setHome = function() {    
-    this.$ctrl.homevar = '42';    
-  }
 }

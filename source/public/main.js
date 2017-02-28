@@ -6,41 +6,18 @@ main.config(['$locationProvider', '$routeProvider',
 
     $routeProvider.
       when('/home', {
-        template : '<home homevar=ctrl.test1></home>'
+        template : '<home></home>'
       }).
       when('/setup', {
-        template : '<setup test=ctrl.test1></setup>'
+        template : '<setup data=ctrl.player_data></setup>'
       }).
       when('/game', {
-        template : '<game></game>'
+        template : '<game data=ctrl.player_data></game>'
       }).
       otherwise('/home');
   }
 ]);
 
 main.controller('MainController', function MainController($scope, $location) {
-  
+  this.player_data = {name:'guest', color:'#dddddd'};  
 });
-
-
-/*
-menu.config(['routeProvider', function($routeProvider) {
-  $routeProvider.
-    when('/client')
-}]);
-
-menu.controller('MenuController', function MenuController($scope, $location) {
-  $scope.data = {
-    availableOptions : [
-      {name : 'red', value : "#ff0000"},
-      {name : 'blue', value : "#0000ff"},
-      {name : 'green', value : "#00ff00"}
-    ]
-  }
-
-  $scope.submitForm = function() {
-    console.log( 'selected color:', $scope.data.selectedOption );
-    $location.path('client.html');
-  }
-});
-*/
