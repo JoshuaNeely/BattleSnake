@@ -19,7 +19,7 @@ var snake_array = [];
 
 var new_fruit = []; // freshly spawned fruit; information to be sent to every client
 var new_segments = [];
-var leaderboard = [{name:'smitty', score:12}, {name:'werben', score:2}, {name:'yeggermanjenson', score:52}];
+var new_leaderboard = [];
 
 // intial file served to a connecting browser
 app.get('/', function(req, res) {
@@ -85,12 +85,18 @@ io.on('connection', function(socket) {
       segment_array.push( {row:segment.row, column:segment.column, color:snake.color} );
     }
   }
+
+  var leaderboard = [];
+  for (snake of snake_array) {
+    leaderboard.push( {score : snake.score, color : snake.color, name : snake.name, size : snake.size} );
+  }
   
   var initial_data = {
     game_width : game_width,
     game_height : game_height,
     fruit_array : fruit_array,
-    segment_array : segment_array,    
+    segment_array : segment_array,
+    leaderboard : leaderboard
   }
   this.emit('game_setup', initial_data);
 
@@ -121,6 +127,8 @@ function update_game() {
         collided_fruit = game_matrix[new_pos.row][new_pos.column].fruit;
         if (collided_fruit) {
           snake.size += collided_fruit.nutrition;
+          snake.add_score(collided_fruit.score);                  
+
           for (var i=0; i<fruit_array.length; i++) {
             if (fruit_array[i].row == new_pos.row && fruit_array[i].column == new_pos.column) {
               fruit_array.splice(i,1);
@@ -156,16 +164,20 @@ function update_game() {
 }
 
 function update_clients()	{
+  // send collected new-data to every socket
 	for (var i=0; i<sockets_watching.length; i++) {
     var update_data = {
       new_fruit : new_fruit,
       new_segments : new_segments,
-      leaderboard : leaderboard
+      new_leaderboard : new_leaderboard
     }
-		sockets_watching[i].emit('screen_update', update_data);
+		sockets_watching[i].emit('screen_update', update_data);    
 	}
+
+  // clear the new-data arrays
   new_fruit = [];
   new_segments = [];
+  new_leaderboard = [];
 }
 
 function cleanup_clients() {
@@ -216,6 +228,7 @@ function Snake(parent_socket_reference, player_data) {
   // ------ local variables ------  
   this.color = player_data.color;
   this.name = player_data.name;
+  this.score = 0;
   this.parent = parent_socket_reference;  // a reference to the parent; if it leaves this should be null
   
   // ------ methods ------
@@ -224,9 +237,20 @@ function Snake(parent_socket_reference, player_data) {
     this.direction = {x:1, y:0};
     this.size = 3;
     this.alive = true;
+    this.set_score(0);
     
     this.parent.emit('respawned', {initial_direction:this.direction});
   };
+
+  this.set_score = function(new_score) {
+    this.score = new_score;
+    new_leaderboard.push( {score : this.score, color : this.color, name : this.name, size : this.size} );
+  }
+
+  this.add_score = function(added_score) {
+    this.score += added_score;
+    new_leaderboard.push( {score : this.score, color : this.color, name : this.name, size : this.size} );
+  }
 
   this.respawn();
 }
@@ -236,9 +260,11 @@ function Fruit(row, col) {
   if (u.random(0,5) == 0) {
     this.nutrition = 5;
     this.color = "#00ff00";
+    this.score = 20;
   } else {
     this.nutrition = 1;
     this.color = "#ff0000";
+    this.score = 3;
   }
   this.row = row;
   this.column = col;

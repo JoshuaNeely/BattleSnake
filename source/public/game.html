@@ -10,15 +10,14 @@
 
     <div class="container">
       <div>
-        <canvas id="gameCanvas" class="left" height="500px" width="500px"></canvas>
+        <div>
+          <canvas id="gameCanvas" class="left" height="500px" width="500px"></canvas>
+        </div>
+        <div class="right">
+          <div ng-repeat="entry in leaderboard | orderBy:'-size'">{{entry.name}}  size: {{entry.size}}</div>
+        </div>
       </div>
-      <div class="right">
-        {{leaderboard}}
-          <!--<p ng-repeat="for entry in leaderboard">{{entry.name}} : {{entry.score}}</p>-->
-      </div>
-    </div>
-    
-    <div>
+    <div class="container">
       <button ng-click="join()">ENTER</button>
       <button ng-click="leave()">LEAVE</button>
     </div>

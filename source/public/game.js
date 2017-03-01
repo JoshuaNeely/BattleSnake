@@ -25,6 +25,8 @@ function GameController($routeParams, $scope) {
 
   var dir = {x:1, y:0};
 
+  $scope.leaderboard = [];  
+
   // ------ controls ------
   addEventListener('keydown', function(event) {
     var old_dir = {x:dir.x, y:dir.y};
@@ -55,6 +57,8 @@ function GameController($routeParams, $scope) {
     xinterval = canvas.width / xsections;
     yinterval = canvas.height / ysections;
 
+    $scope.leaderboard = setup_data.leaderboard;
+
     draw_background();
 
     for (fruit of setup_data.fruit_array) {
@@ -79,8 +83,18 @@ function GameController($routeParams, $scope) {
     for (segment of new_data.new_segments) {
       draw_square(segment.row, segment.column, segment.color, 1);
     }
-
-    $scope.leaderboard = new_data.leaderboard;
+    
+    if (new_data.new_leaderboard) {
+      for (entry of new_data.new_leaderboard) {      
+        var index = -1;        
+        index = $scope.leaderboard.map(function(e) { return e.name; }).indexOf(entry.name);
+        if (index >= 0) {
+          $scope.leaderboard.splice(index,1);
+        }              
+        $scope.leaderboard.push( entry );        
+        $scope.$apply();
+      }
+    }
   });
 
 
