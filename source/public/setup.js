@@ -14,10 +14,14 @@ function SetupController($scope, $routeParams, $location) {
   $scope.data = {
     name : "Guest",
     availableOptions : [
-      {color_name : 'white',  color_value : "#ffffff"},
-      {color_name : 'red',    color_value : "#ff0000"},
-      {color_name : 'blue',   color_value : "#0000ff"},
-      {color_name : 'green',  color_value : "#00ff00"}
+      {color_name : 'white',    color_value : "#ffffff"},
+      {color_name : 'red',      color_value : "#ff1e1e"},
+      {color_name : 'blue',     color_value : "#3c46c8"},
+      {color_name : 'green',    color_value : "#23b450"},
+      {color_name : 'orange',   color_value : "#ff8228"},
+      {color_name : 'yellow',   color_value : "#ffff00"},
+      {color_name : 'purple',   color_value : "#a050a0"},
+      {color_name : 'pink',     color_value : "#ffb4c8"}     
     ]
   }
 
