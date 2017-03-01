@@ -19,6 +19,7 @@ var snake_array = [];
 
 var new_fruit = []; // freshly spawned fruit; information to be sent to every client
 var new_segments = [];
+var leaderboard = [{name:'smitty', score:12}, {name:'werben', score:2}, {name:'yeggermanjenson', score:52}];
 
 // intial file served to a connecting browser
 app.get('/', function(req, res) {
@@ -76,6 +77,7 @@ io.on('connection', function(socket) {
 	console.log("client  " + socket.id + " added to watching sockets");
 
   sockets_watching.push(socket);
+
 
   var segment_array = [];
   for (snake of snake_array) {
@@ -157,7 +159,8 @@ function update_clients()	{
 	for (var i=0; i<sockets_watching.length; i++) {
     var update_data = {
       new_fruit : new_fruit,
-      new_segments : new_segments
+      new_segments : new_segments,
+      leaderboard : leaderboard
     }
 		sockets_watching[i].emit('screen_update', update_data);
 	}

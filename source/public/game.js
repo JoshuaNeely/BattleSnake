@@ -79,6 +79,8 @@ function GameController($routeParams, $scope) {
     for (segment of new_data.new_segments) {
       draw_square(segment.row, segment.column, segment.color, 1);
     }
+
+    $scope.leaderboard = new_data.leaderboard;
   });
 
 
