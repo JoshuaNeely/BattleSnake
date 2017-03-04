@@ -14,11 +14,18 @@
           <canvas id="gameCanvas" class="left" height="500px" width="500px"></canvas>
         </div>
         <div class="right">
-          <div ng-repeat="entry in leaderboard | orderBy:'-size'">
-            <span ng-hide="entry.copy_number">{{entry.name}}</span>
-            <span ng-show="entry.copy_number">{{entry.name}}({{entry.copy_number}})</span>
-            size: {{entry.size}}
-          </div>
+          <table>
+            <tr ng-repeat="entry in leaderboard | orderBy:'-size'">
+              <td>
+                <span ng-hide="entry.copy_number">{{entry.name}}</span>
+                <span ng-show="entry.copy_number">{{entry.name}}({{entry.copy_number}})</span>
+              </td>
+              <td>size: {{entry.size}}</td>
+              <td>color:
+                <canvas class="color-swatch" height="10px" width="10px" ng-style="{'background-color':'{{entry.color}}'}"></canvas>
+              </td>              
+            </tr>
+          </table>
         </div>
       </div>
     <div class="container">
