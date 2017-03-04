@@ -29,6 +29,6 @@ function SetupController($scope, $routeParams, $location) {
 
   $scope.submitForm = function() {    
     this.$ctrl.data = {name: $scope.data.name, color: $scope.data.selectedOption.color_value};
-    $location.path('/home');
+    $location.path('/game');
   }
 }

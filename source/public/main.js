@@ -14,7 +14,7 @@ main.config(['$locationProvider', '$routeProvider',
       when('/game', {
         template : '<game data=ctrl.player_data></game>'
       }).
-      otherwise('/home');
+      otherwise('/setup');
   }
 ]);
 
