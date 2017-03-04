@@ -72,12 +72,13 @@ var leave_game = function() {
 }
 
 var player_input = function(direction) {
-  if (!this.snake) {
+  if (!this.snake || this.snake.turned) {
     return;
   }
 
   if (this.snake.direction.x != direction.x*-1 || this.snake.direction.y != direction.y*-1) {
     this.snake.direction = direction;
+    this.snake.turned = true;
   }
 }
 
@@ -126,6 +127,7 @@ function update_game() {
 
   for (var snake of snake_array) {    
     var head = snake.segments[0];
+    snake.turned = false;
 
     if (snake.alive) {
       // move snake forward
