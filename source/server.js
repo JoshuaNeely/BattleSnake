@@ -21,12 +21,6 @@ var new_fruit = []; // freshly spawned fruit; information to be sent to every cl
 var new_segments = [];
 var new_leaderboard = [];
 
-// intial file served to a connecting browser
-app.get('/', function(req, res) {
-	res.sendFile(__dirname + '/public/index.html'); //client.html');
-});
-
-
 // ------ listener functions ------
 // bound to each unique socket, accessed via 'this'
 
