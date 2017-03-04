@@ -14,7 +14,11 @@
           <canvas id="gameCanvas" class="left" height="500px" width="500px"></canvas>
         </div>
         <div class="right">
-          <div ng-repeat="entry in leaderboard | orderBy:'-size'">{{entry.name}}  size: {{entry.size}}</div>
+          <div ng-repeat="entry in leaderboard | orderBy:'-size'">
+            <span ng-hide="entry.copy_number">{{entry.name}}</span>
+            <span ng-show="entry.copy_number">{{entry.name}}({{entry.copy_number}})</span>
+            size: {{entry.size}}
+          </div>
         </div>
       </div>
     <div class="container">

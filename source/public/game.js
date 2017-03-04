@@ -87,7 +87,7 @@ function GameController($routeParams, $scope) {
     if (new_data.new_leaderboard) {
       for (entry of new_data.new_leaderboard) {      
         var index = -1;        
-        index = $scope.leaderboard.map(function(e) { return e.name; }).indexOf(entry.name);
+        index = $scope.leaderboard.map(function(e) { return (e.name + e.copy_number); }).indexOf((entry.name+entry.copy_number));
         if (index >= 0) {
           $scope.leaderboard.splice(index,1);
         }              

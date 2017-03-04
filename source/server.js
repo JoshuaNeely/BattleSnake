@@ -45,6 +45,15 @@ var handle_disconnect = function() {
 var join_game = function(player_data) {
   console.log("client  " + this.id + " joined the game");
 
+  // find duplicates of player_data.name already in game
+  var highest_copy = -1;
+  for (snake of snake_array) {
+    if (snake.name == player_data.name) {
+      highest_copy = highest_copy < snake.copy_number ? snake.copy_number : highest_copy;
+    }
+  }
+  player_data.copy_number = highest_copy + 1;
+
   var index = sockets_watching.indexOf(this);  
   if (index >= 0) {  
     snake_array.push( new Snake( sockets_watching[index], player_data ) );
@@ -88,7 +97,7 @@ io.on('connection', function(socket) {
 
   var leaderboard = [];
   for (snake of snake_array) {
-    leaderboard.push( {score : snake.score, color : snake.color, name : snake.name, size : snake.size} );
+    leaderboard.push( {score : snake.score, color : snake.color, name : snake.name, copy_number : this.copy_number, size : snake.size} );
   }
   
   var initial_data = {
@@ -228,9 +237,10 @@ function Snake(parent_socket_reference, player_data) {
   // ------ local variables ------  
   this.color = player_data.color;
   this.name = player_data.name;
+  this.copy_number = player_data.copy_number;
   this.score = 0;
   this.parent = parent_socket_reference;  // a reference to the parent; if it leaves this should be null
-  
+
   // ------ methods ------
   this.respawn = function() {   
     this.segments = [ {column:0, row:0} ];
@@ -244,12 +254,12 @@ function Snake(parent_socket_reference, player_data) {
 
   this.set_score = function(new_score) {
     this.score = new_score;
-    new_leaderboard.push( {score : this.score, color : this.color, name : this.name, size : this.size} );
+    new_leaderboard.push( {score : this.score, color : this.color, name : this.name, copy_number : this.copy_number, size : this.size} );
   }
 
   this.add_score = function(added_score) {
     this.score += added_score;
-    new_leaderboard.push( {score : this.score, color : this.color, name : this.name, size : this.size} );
+    new_leaderboard.push( {score : this.score, color : this.color, name : this.name, copy_number : this.copy_number, size : this.size} );
   }
 
   this.respawn();
