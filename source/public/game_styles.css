@@ -44,3 +44,7 @@ body {
 .color-swatch {
   border: 1px solid #000000;
 }
+
+tr td {
+  padding : 5px;
+}

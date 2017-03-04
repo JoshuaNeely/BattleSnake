@@ -65,6 +65,7 @@ var leave_game = function() {
   console.log("client " + this.id + " has left the game" );
 
   if (this.snake) {
+    this.snake.set_score(-1); // also removes from client leaderboards
     this.snake.alive = false;
     this.snake.no_respawn = true;
     this.snake.parent = null;
@@ -98,7 +99,7 @@ io.on('connection', function(socket) {
 
   var leaderboard = [];
   for (snake of snake_array) {
-    leaderboard.push( {score : snake.score, color : snake.color, name : snake.name, copy_number : this.copy_number, size : snake.size} );
+    leaderboard.push( {score : snake.score, color : snake.color, name : snake.name, copy_number : snake.copy_number, size : snake.size} );
   }
   
   var initial_data = {
@@ -108,7 +109,7 @@ io.on('connection', function(socket) {
     segment_array : segment_array,
     leaderboard : leaderboard
   }
-  this.emit('game_setup', initial_data);
+  socket.emit('game_setup', initial_data);
 
 	
   socket.on('join_game', join_game.bind(socket) );

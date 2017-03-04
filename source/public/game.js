@@ -15,7 +15,7 @@ function GameController($routeParams, $scope) {
   var ctx = canvas.getContext("2d");
 
   var socket = io();
-  var joined = false;
+  $scope.joined = false;
 
   var background_color = "#333333";
   var xsections = 0;
@@ -88,8 +88,10 @@ function GameController($routeParams, $scope) {
         index = $scope.leaderboard.map(function(e) { return (e.name + e.copy_number); }).indexOf((entry.name+entry.copy_number));
         if (index >= 0) {
           $scope.leaderboard.splice(index,1);
-        }              
-        $scope.leaderboard.push( entry );        
+        }
+        if (entry.score >= 0) {
+          $scope.leaderboard.push( entry );
+        }
         $scope.$apply();
       }
     }
@@ -98,15 +100,15 @@ function GameController($routeParams, $scope) {
 
   // ------ functions ------
   $scope.join = function() {
-  	if (joined == false) {
-  		joined = true;
+  	if ($scope.joined == false) {
+  		$scope.joined = true;
       socket.emit("join_game", $scope.$ctrl.data);
     }
   }
 
   $scope.leave = function() {
-    if (joined == true) {
-      joined = false;
+    if ($scope.joined == true) {
+      $scope.joined = false;
       socket.emit("leave_game", {});
     }
   }

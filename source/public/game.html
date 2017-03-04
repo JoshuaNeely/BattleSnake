@@ -29,12 +29,8 @@
         </div>
       </div>
     <div class="container">
-      <button ng-click="join()">ENTER</button>
-      <button ng-click="leave()">LEAVE</button>
+      <button ng-hide="joined" ng-click="join()">ENTER</button>
+      <button ng-show="joined" ng-click="leave()">LEAVE</button>
     </div>
   </div>
 </body>
-<footer>
-  
-  
-</footer>
