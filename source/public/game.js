@@ -43,10 +43,8 @@ function GameController($routeParams, $scope) {
     else if(event.keyCode == 40) {    // down
       dir = {x:0, y:1};
     }
-    
-    if (old_dir.x != dir.x || old_dir.y != dir.y) {
-      socket.emit("direction_control", dir);
-    }
+
+    socket.emit("direction_control", dir);
   });
 
   // ------ socket listen events ------
