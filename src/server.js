@@ -293,7 +293,7 @@ setInterval( function() {
 }, 1000/FPS);
 
 
-
-http.listen(80, function() {		// 80 is default for web browsers visiting a page
-  console.log('listening on :80');
+var PORT = 80;
+http.listen(PORT, '0.0.0.0', function() {		// 80 is default for web browsers visiting a page
+  console.log('listening on port', PORT);
 });
